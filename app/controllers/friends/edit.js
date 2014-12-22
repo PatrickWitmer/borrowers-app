@@ -1,11 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  // form validator for adding new friend information
-
   isValid: Ember.computed(
     'model.email',
-    'model.firstName',
+    'model.firstname',
     'model.lastName',
     'model.twitter',
     function() {
@@ -13,28 +11,26 @@ export default Ember.Controller.extend({
       !Ember.isEmpty(this.get('model.firstName')) &&
       !Ember.isEmpty(this.get('model.lastName')) &&
       !Ember.isEmpty(this.get('model.twitter'));
-
     }
   ),
   actions: {
     save: function() {
       if (this.get('isValid')) {
-      var _this = this;
-        this.get('model').save().then(function(friend) {
-          _this.transitionToRoute('friends.show', friend);
-      });
-    }  else {
-        this.set('errorMessage', 'Please fill out all the fields amigo.');
-    }
-
-      return false;
+        var _this= this;
+          this.get('model').save().then(function(friend){
+            _this.transitionToRoute('friends.show', friend);
+          });
+        } else {
+            this.set('errorMessage', 'Please fill out all of the fields.');
+          }
+          return false;
     },
-    cancel: function() {
-      this.transitionToRoute('friends');
+      cancel: function() {
+        this.transitionToRoute('friends.show', this.get('model'));
+        return false;
 
-      return false;
+      }
     }
-  }
 
 
 });
